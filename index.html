@@ -3,11 +3,12 @@
 <head>
 	<title>Anycharts test</title>
 	<script src="https://cdn.anychart.com/releases/8.1.0/js/graphics.min.js" type="text/javascript">
+      
 	</script>
 	<style>
 		#stage-container {
-			width: 700px;
-			height: 475px;
+			width: 800px;
+			height: 500px;
 		}
       body {
           padding: 0px 25px      
@@ -16,57 +17,72 @@
 </head>
 <body>
     <p>Введите число и нажмите кнопку, чтобы отобразить на графике</p>
-    <p><input type="text" value="Введите число"> <button>Отобразить</button></p>
+    <p><input type="text" value="Введите число"> 
+      
+       <button onclick="alert(frameHeight)">Отобразить</button></p>
 	<div id="stage-container"></div>
 	<script>
+              
 		// create a stage
 		var stage = acgraph.create('stage-container');
+      
 		// draw the frame
 		var frameWidth, frameHeight, frameIndent;
-		frameWidth = 600;
+		frameWidth = 700;
 		frameHeight = 400;
-		frameVIndent = 50;
-		frameHIndent = 0;
+       
+        
+		var frame = stage.rect(0, 0, frameWidth, frameHeight);
+        
+        // draw grid
+				
+		var grids, grid;
+			grid = 30;
 		
-		var frame = stage.rect(frameHIndent, frameVIndent, frameWidth, frameHeight);
+		for (i = frameHeight; i > 0; i -= grid){
+			grids = stage.path()
+			.moveTo(0, i)
+			.lineTo(frameWidth, i)
+			grids.stroke('lightgray', 1);
+		}
+        for (j = 0; j <= frameWidth; j += grid) {
+            grids = stage.path()
+			.moveTo(j, frameHeight)
+			.lineTo(j, 0)
+			grids.stroke('lightgray', 1);
+        }
+        
 		
 		// draw axis
 		var axisY = stage.path()
-			.moveTo((frameHIndent + 40), (frameVIndent + 40))
-			.lineTo((frameHIndent + 40), (frameVIndent + frameHeight - 20))
+			.moveTo(grid, grid)
+			.lineTo(grid, (frameHeight - grid))
 			.close();
-        var simpleLayer = stage.layer();
-		
-		var axisYDesc = acgraph.text(frameHIndent + 20, frameVIndent + 40);
-          axisYDesc.parent(simpleLayer);
-          axisYDesc.style({fontStyle: "italic", fontSize: "15px", color: "black"});
+      
+        var textLayer = stage.layer();
+		var axisYDesc = acgraph.text(grid - 15, grid);
+          axisYDesc.parent(textLayer);
+          axisYDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
           axisYDesc.text("Y");		
       
 		var axisX = stage.path()
-			.moveTo((frameHIndent + 20), (frameVIndent + frameHeight - 40))
-			.lineTo((frameHIndent + frameWidth - 40), (frameVIndent + frameHeight - 40))
+			.moveTo(grid, (frameHeight - grid))
+			.lineTo((frameWidth - grid), (frameHeight - grid))
 			.close();
       
-		var axisXDesc = acgraph.text((frameHIndent + frameWidth - 55), (frameVIndent + frameHeight - 35));
-          axisXDesc.parent(simpleLayer);
-          axisXDesc.style({fontStyle: "italic", fontSize: "15px", color: "black"});
+		var axisXDesc = acgraph.text((frameWidth - grid - 10), (frameHeight - grid + 5));
+          axisXDesc.parent(textLayer);
+          axisXDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
           axisXDesc.text("X");	
 		
-		// draw grid
-				
-		var grid, gridPeriod;
-			gridPeriod = 30;
-		
-		for (i = (frameVIndent + gridPeriod); i < (frameVIndent + frameHeight); i += gridPeriod){
-			grid = stage.path()
-			.moveTo(frameHIndent, i)
-			.lineTo(frameHIndent + frameWidth, i)
-			grid.stroke('lightgray', 1);
-		}
 		
 		
-
-
+        var columns = stage.path()
+            .moveTo((56 + startPoint), (frameHeight - 40))
+            .lineTo((42 + startPoint), (frameHeight+60))
+            .close();
+      
+		
 			
 		// draw the house
 	/*	var walls = stage.rect(50, 250, 200, 100);
