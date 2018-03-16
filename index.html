@@ -16,20 +16,22 @@
 	</style>
 </head>
 <body>
-    <p>Введите число и нажмите кнопку, чтобы отобразить на графике</p>
-    <p><input id ="intered" type="text"> 
-      
-       <button onclick="draw(document.getElementById('intered').value)">Отобразить</button></p>
-	<div id="stage-container"></div>
+    <p>Введите число и нажмите Enter или кнопку "Отобразить", чтобы отобразить число на графике</p>
+    <form onsubmit="draw(document.getElementById('intered').value); return false;">
+	  Введите число: <input id="intered">
+      <input type="submit" value="Отобразить">
+    </form> 
+    <p></p>
+    <div id="stage-container"></div>
 	<script>
-              
+ 
 		// создаем stage
 		var stage = acgraph.create('stage-container');
       
 		// рисуем рамку
 		var frameWidth, frameHeight, frameIndent;
-		frameWidth = 700;
-		frameHeight = 400;
+		frameWidth = 720;
+		frameHeight = 480;
        
         
 		var frame = stage.rect(0, 0, frameWidth, frameHeight);
@@ -89,13 +91,13 @@
           //подписываем по оси Y
           axisХNum = acgraph.text(startPoint - 7, (frameHeight - grid - point - 17));
           axisХNum.parent(textLayer);
-          axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "gray"});
+          axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
           axisХNum.text(document.getElementById('intered').value);
           
           //подписываем по оси X
           axisХNum = acgraph.text(startPoint -2, (frameHeight - grid + 7));
           axisХNum.parent(textLayer);
-          axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "gray"});
+          axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
           axisХNum.text(axisXValDesc);
           axisXValDesc++;
            
