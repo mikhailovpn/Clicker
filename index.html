@@ -81,11 +81,22 @@
         
         //рисуем график
         function draw() {
-          for (i = 1; i < interedValues.length; i++) {
+          //высчитываем наибольшее введенное значение для определения масштаба
+          var maxValue = Math.abs(interedValues[0]);
+          for (i = 0; i < interedValues.length; i++) {
+            if (Math.abs(interedValues[i]) > maxValue){
+              maxValue = Math.abs(interedValues[i]);
+            }
+          }
+          //вводим переменную для учета масштаба
+          var multi = (frameV/2 - grid) / maxValue;   
+          //рисуем линии
+          for (j = 1; j < interedValues.length; j++) {
             graph = stage.path()
-            .moveTo(grid + grid*i, frameV/2 - interedValues[i-1])
-            .lineTo(grid + grid*(i+1), frameV/2 - interedValues[i])
+            .moveTo(grid + grid*j, frameV/2 - interedValues[j-1]* multi)
+            .lineTo(grid + grid*(j+1), frameV/2 - interedValues[j] * multi)
             .close();
+            graph.stroke('gray', 1);
           }
         }
   </script>
