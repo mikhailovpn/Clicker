@@ -16,7 +16,7 @@
 	</style>
 </head>
 <body>
-    <p>Введите число и нажмите Enter или кнопку "Отобразить", чтобы отобразить число на графике</p>
+    <p>Введите число от -200 до 200 и нажмите Enter или кнопку "Отобразить", чтобы отобразить число на графике</p>
     <form onsubmit="draw(document.getElementById('intered').value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Отобразить">
@@ -24,7 +24,6 @@
     <p></p>
     <div id="stage-container"></div>
 	<script>
- 
 		// создаем stage
 		var stage = acgraph.create('stage-container');
       
@@ -68,11 +67,11 @@
           axisYDesc.text("Y");		
       
 		var axisX = stage.path()
-          .moveTo(grid, (frameHeight - grid))
-          .lineTo((frameWidth - grid), (frameHeight - grid))
+          .moveTo(grid, (frameHeight/2))
+          .lineTo((frameWidth - grid), (frameHeight/2))
           .close();
       
-		var axisXDesc = acgraph.text((frameWidth - grid - 10), (frameHeight - grid + 5));
+		var axisXDesc = acgraph.text((frameWidth - grid - 10), (frameHeight/2 + 5));
           axisXDesc.parent(textLayer);
           axisXDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
           axisXDesc.text("X");	
@@ -80,30 +79,47 @@
         //функция для рисования точек
         var column, startPoint = grid, axisXValDesc = 1;
         function draw (point){
+          //тест запуска фнкции получения данных из поля ввода
+          //alert(document.getElementById('intered').value);
           //рисуем точку/колонну
           startPoint += grid;
           column = stage.path()
-          .moveTo(startPoint, (frameHeight - grid))
-          .lineTo(startPoint, (frameHeight - grid - point))
+          .moveTo(startPoint, (frameHeight/2))
+          .lineTo(startPoint, (frameHeight/2 - point))
           .close();
           column.stroke('gray', 10);
          
           //подписываем по оси Y
-          axisХNum = acgraph.text(startPoint - 7, (frameHeight - grid - point - 17));
-          axisХNum.parent(textLayer);
-          axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
-          axisХNum.text(document.getElementById('intered').value);
+        if (document.getElementById('intered').value >= 0) {
+           axisХNum = acgraph.text(startPoint - 7, (frameHeight/2 - point - 17));
+           axisХNum.parent(textLayer);
+           axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
+           axisХNum.text(document.getElementById('intered').value);
           
           //подписываем по оси X
-          axisХNum = acgraph.text(startPoint -2, (frameHeight - grid + 7));
-          axisХNum.parent(textLayer);
-          axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
-          axisХNum.text(axisXValDesc);
-          axisXValDesc++;
+           axisХNum = acgraph.text(startPoint -2, (frameHeight/2 + 7));
+           axisХNum.parent(textLayer);
+           axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
+           axisХNum.text(axisXValDesc);
+           axisXValDesc++;
+          } else {
+           axisХNum = acgraph.text(startPoint - 7, (frameHeight/2 - point + 10));
+           axisХNum.parent(textLayer);
+           axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
+           axisХNum.text(document.getElementById('intered').value);
+          
+          //подписываем по оси X
+           axisХNum = acgraph.text(startPoint -2, (frameHeight/2 - 20));
+           axisХNum.parent(textLayer);
+           axisХNum.style({fontStyle: "bold", fontSize: "10px", color: "black"});
+           axisХNum.text(axisXValDesc);
+           axisXValDesc++;
+          }
            
           //очищаем поле ввода
            document.getElementById('intered').value = '';
         }	
+      
 		
 	</script>
 </body>
