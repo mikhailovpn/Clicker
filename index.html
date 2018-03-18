@@ -9,7 +9,7 @@
 		html, body,  #container {
 			width: 100%;
 			height: 100%;
-            margin: 0;
+            margin: px;
             padding: 10px;
 		}
     </style>
@@ -20,11 +20,10 @@
     <form action="" onsubmit="addValue(document.getElementById('intered').value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Добавить значение">
-    </form> 
-    <div>
-    </div>
-    <button type="button" onclick="graph.clear()">Кнопка для тестирования</button>
-    <button type="button" onclick="draw()">Нарисовать график</button>
+    </form></br>
+
+    <!-- <button type="button" onclick="graph.clear()">Кнопка для тестирования</button> -->
+    <button type="button" onclick="draw()" style="font-size: 15pt; padding: 10px; margin: 10px">Нарисовать график</button>
     <p></p>
     <div id="container"></div>
 	<script>
@@ -44,24 +43,11 @@
         var frameV = 500, frameH = 750;
         var frame = stage.rect(0,0,frameH, frameV);
         
-        // задаем размерность и рисуем сетку
+        // задаем размерность сетки
 		var grids, grid;
-			grid = 50;
+			grid = frameH/15;
 		
-		for (i = frameV; i > 0; i -= grid){
-			grids = stage.path()
-			.moveTo(0, i)
-			.lineTo(frameH, i)
-			grids.stroke('lightgray', 1);
-		}
-        for (j = 0; j <= frameH; j += grid) {
-            grids = stage.path()
-			.moveTo(j, frameV)
-			.lineTo(j, 0)
-			grids.stroke('lightgray', 1);
-        }
-
-        // рисуем оси
+		// рисуем оси
 		var axisY = stage.path()
 			.moveTo(frameH/15, frameV/10)
 			.lineTo(frameH/15, (frameV - frameV/10))
@@ -96,9 +82,25 @@
             }
           }           
           //вводим переменную для учета масштаба
-          //проверяем, не нарисован ли у нас уже график, если нарисован - масштаб не меняем
+          //проверяем, не нарисован ли у нас уже хоть один график, если нарисован - масштаб не меняем, сетку не меняем
           if (multi === 0) {
-            multi = (frameV/2 - frameV/5) / maxValue;   
+            multi = (frameV/2 - frameV/5) / maxValue;
+            //если чисел введено больше чем влезет - ужимаем сетку по оси X
+            if (interedValues.length > 12) {grid /= 2;}
+          
+            //рисуем сетку
+            for (i = frameV; i > 0; i -= grid){
+              grids = stage.path()
+              .moveTo(0, i)
+              .lineTo(frameH, i)
+              grids.stroke('lightgray', 1);
+            }
+            for (j = 0; j <= frameH; j += grid) {
+              grids = stage.path()
+              .moveTo(j, frameV)
+              .lineTo(j, 0)
+              grids.stroke('lightgray', 1);
+            }
           }
           //рисуем линии графика
           for (j = 1; j < interedValues.length; j++) {
