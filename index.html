@@ -17,32 +17,36 @@
 <body>
     <p>Вводите числа и нажимайте Enter или кнопку "Добавить значение", чтобы добавить значения.</br>
     Затем нажмите "Нарисовать график'</p>
-    <form onsubmit="addValue(document.getElementById('intered').value); return false;">
+    <form action="" onsubmit="addValue(document.getElementById('intered').value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Добавить значение">
     </form> 
-    <p id="listOfNumbers"></p>
-    <button type="button" onclick="alert(interedValues)">Отобразить какие числа введены</button>
-  <button type="button" onclick="draw()">Нарисовать график</button>
+    <div>
+    </div>
+    <button type="button" onclick="graph.clear()">Кнопка для тестирования</button>
+    <button type="button" onclick="draw()">Нарисовать график</button>
     <p></p>
     <div id="container"></div>
 	<script>
         //вводим числа
         var interedValues = [];
-        function addValue(newValue) {
-          interedValues.push(newValue);
-          document.getElementById('intered').value = '';
-        }
+        
+      function addValue(newValue) {
+        //добавляем значения в массив чисел
+        interedValues.push(newValue);
+        document.getElementById('intered').value = '';
+      }
+      
         //создаем сцену
         var stage = acgraph.create('container');
+      
         //рисуем рамку
         var frameV = 500, frameH = 750;
-        var frame = stage.rect(0,0,frameH, frameV)
+        var frame = stage.rect(0,0,frameH, frameV);
         
-        // рисуем сетку
-				
+        // задаем размерность и рисуем сетку
 		var grids, grid;
-			grid = 25;
+			grid = 50;
 		
 		for (i = frameV; i > 0; i -= grid){
 			grids = stage.path()
@@ -56,49 +60,58 @@
 			.lineTo(j, 0)
 			grids.stroke('lightgray', 1);
         }
-        
+
         // рисуем оси
 		var axisY = stage.path()
-			.moveTo(grid, grid)
-			.lineTo(grid, (frameV - grid))
+			.moveTo(frameH/15, frameV/10)
+			.lineTo(frameH/15, (frameV - frameV/10))
 			.close();
       
         var textLayer = stage.layer();
-		var axisYDesc = acgraph.text(grid*1.3, grid);
+		var axisYDesc = acgraph.text(frameH/25,  frameV/10);
           axisYDesc.parent(textLayer);
           axisYDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
           axisYDesc.text("Y");		
       
 		var axisX = stage.path()
-          .moveTo(grid, (frameV/2))
-          .lineTo((frameH - grid), (frameV/2))
+          .moveTo(frameH/15, (frameV/2))
+          .lineTo((frameH - frameH/15), (frameV/2))
           .close();
       
-		var axisXDesc = acgraph.text((frameH - grid*1.3), (frameV/2 + grid/5));
+		var axisXDesc = acgraph.text((frameH - frameH/12), (frameV/2 + frameV/50));
           axisXDesc.parent(textLayer);
           axisXDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
           axisXDesc.text("X");
+      
         
         //рисуем график
-        function draw() {
+        var graph, multi = 0;
+        function draw(){
           //высчитываем наибольшее введенное значение для определения масштаба
-          var maxValue = Math.abs(interedValues[0]);
+          var maxValue;
+          maxValue = Math.abs(interedValues[0]);
           for (i = 0; i < interedValues.length; i++) {
             if (Math.abs(interedValues[i]) > maxValue){
               maxValue = Math.abs(interedValues[i]);
             }
-          }
+          }           
           //вводим переменную для учета масштаба
-          var multi = (frameV/2 - grid) / maxValue;   
-          //рисуем линии
+          //проверяем, не нарисован ли у нас уже график, если нарисован - масштаб не меняем
+          if (multi === 0) {
+            multi = (frameV/2 - frameV/5) / maxValue;   
+          }
+          //рисуем линии графика
           for (j = 1; j < interedValues.length; j++) {
             graph = stage.path()
-            .moveTo(grid + grid*j, frameV/2 - interedValues[j-1]* multi)
-            .lineTo(grid + grid*(j+1), frameV/2 - interedValues[j] * multi)
-            .close();
+            .moveTo(frameH/15 + grid*j, frameV/2 - interedValues[j-1]* multi)
+            .lineTo(frameH/15 + grid*(j+1), frameV/2 - interedValues[j] * multi)
             graph.stroke('gray', 1);
           }
+          //очищаем массив с введенными данными, чтобы можно было нарисовать еще один график
+          interedValues = [];
         }
+         
+      
   </script>
   
 </body>
