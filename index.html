@@ -31,17 +31,17 @@
         //вводим числа
         var interedValues = [];
         
-      function addValue(newValue) {
-        //добавляем значения в массив чисел
-        interedValues.push(newValue);
-        document.getElementById('intered').value = '';
-      }
+        function addValue(newValue) {
+          //добавляем значения в массив чисел
+          interedValues.push(newValue);
+          document.getElementById('intered').value = '';
+        }
       
         //создаем сцену
         var stage = acgraph.create('container');
       
         //рисуем рамку
-        var frameV = window.innerWidth/3, frameH = frameV*1.5;
+        var frameH = window.innerWidth/1.2, frameV = frameH*2/3;
         var frame = stage.rect(0,0,frameH, frameV);
         
         // задаем базовую размерность сетки
@@ -54,24 +54,22 @@
         drawAxis();
         function drawAxis() {
 		var axisY = stage.path()
-			.moveTo(frameH/15, frameV/10)
-			.lineTo(frameH/15, (frameV - frameV/10))
-			.close();
+          .moveTo(frameH/15, frameV/10)
+          .lineTo(frameH/15, (frameV - frameV/10))
+          .close();
         
-		var axisYDesc = acgraph.text(frameH/25,  frameV/10);
+		var axisYDesc = acgraph.text(frameH/25,  frameV/10, "Y");
           axisYDesc.parent(textLayer);
           axisYDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
-          axisYDesc.text("Y");		
       
 		var axisX = stage.path()
           .moveTo(frameH/15, (frameV/2))
           .lineTo((frameH - frameH/15), (frameV/2))
           .close();
       
-		var axisXDesc = acgraph.text((frameH - frameH/12), (frameV/2 + frameV/50));
+		var axisXDesc = acgraph.text((frameH - frameH/12), (frameV/2 + frameV/50), "X");
           axisXDesc.parent(textLayer);
           axisXDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
-          axisXDesc.text("X");
       
         }
         //создаем функцию для рисования сетки, нарисуем ее, когда будет известен масштаб
@@ -89,7 +87,8 @@
             grids.stroke('lightgray', 1);
           }
         }
-        //рисуем график
+      
+        ////рисуем график
         var multi = 0;
         function draw(){
           //высчитываем наибольшее введенное значение для определения масштаба
@@ -100,13 +99,12 @@
               maxValue = Math.abs(interedValues[i]);
             }
           }           
-          //вводим переменную для учета масштаба
           //проверяем, не нарисован ли у нас уже хоть один график, если нарисован - масштаб не меняем, сетку не меняем
           if (multi === 0) {
+            //вводим переменную для учета масштаба
             multi = (frameV/2 - frameV/5) / maxValue;
             //если чисел введено больше чем влезет - ужимаем сетку по оси X
-            if (interedValues.length > 12) {grid /= 2;}
-          
+            grid = grid/Math.ceil(interedValues.length/12);
             //рисуем сетку
             drawGrids();
             //рисуем оси
@@ -123,9 +121,8 @@
 
         //подписываем введенные значения на оси Х
           for(k = 1; k <= interedValues.length; k++) {
-            var axisXValues = stage.text(frameH/16 + grid*k, frameV/2 + frameV/100);
+            var axisXValues = stage.text(frameH/16 + grid*k, frameV/2 + frameV/100, k);
             axisXValues.parent(textLayer);
-            axisXValues.text(k);
           } 
           
           //очищаем массив с введенными данными, чтобы можно было нарисовать еще один график 
