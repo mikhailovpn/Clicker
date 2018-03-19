@@ -21,27 +21,32 @@
     <form action="" onsubmit="addValue(document.getElementById('intered').value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Добавить значение">
-    </form></br>
-
+    </form>
+    <ol id="interedValuesList">Данные для построения графиков:
+    </ol>
     <!-- <button type="button" onclick="graph.clear()">Кнопка для тестирования</button> -->
     <button type="button" onclick="draw()" style="font-size: 15pt; padding: 10px; margin: 10px">Нарисовать график</button>
     <p></p>
     <div id="container"></div>
 	<script>
-        //вводим числа
+        //Создаем массив для добавленния введенных чисел
         var interedValues = [];
-        
+        //Добавляем раздел для вывода на страницу введенных данных
+        var InteredValuesP = document.createElement('li');
         function addValue(newValue) {
           //добавляем значения в массив чисел
           interedValues.push(newValue);
           document.getElementById('intered').value = '';
+          //выводим введенные значения на страницу
+          InteredValuesP.innerHTML = interedValues;
+          interedValuesList.appendChild(InteredValuesP);
         }
       
         //создаем сцену
         var stage = acgraph.create('container');
       
         //рисуем рамку
-        var frameH = window.innerWidth/1.2, frameV = frameH*2/3;
+        var frameH = window.innerWidth/1.6, frameV = frameH*2/3;
         var frame = stage.rect(0,0,frameH, frameV);
         
         // задаем базовую размерность сетки
@@ -127,6 +132,8 @@
           
           //очищаем массив с введенными данными, чтобы можно было нарисовать еще один график 
           interedValues = [];
+          //добавляем новую строку в вывод элементов на странице
+          InteredValuesP = document.createElement('li');
         }
          
       
