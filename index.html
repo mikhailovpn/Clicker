@@ -18,7 +18,7 @@
     <p>Вводите числа и нажимайте Enter или кнопку "Добавить значение", чтобы добавить значения.</br>
     Затем нажмите "Нарисовать график".<br/>
     Можно добавлять новые графики (с сохранением масштаба).</p>
-    <form action="" onsubmit="addValue(document.getElementById('intered').value); return false;">
+    <form action="" onsubmit="addValue(intered.value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Добавить значение">
     </form>
@@ -32,29 +32,32 @@
         //Создаем массив для добавленния введенных чисел
         var interedValues = [];
         //Добавляем раздел для вывода на страницу введенных данных
-        var InteredValuesP = document.createElement('li');
+        var interedValuesP = document.createElement('li');
         function addValue(newValue) {
-          //добавляем значения в массив чисел
-          interedValues.push(newValue);
-          document.getElementById('intered').value = '';
-          //выводим введенные значения на страницу
-          InteredValuesP.innerHTML = interedValues;
-          interedValuesList.appendChild(InteredValuesP);
+          //проверяем, что введено именно число
+          if (!isNaN(newValue)) {
+            //добавляем значения в массив чисел
+            interedValues.push(newValue);
+            //выводим введенные значения на страницу
+            interedValuesP.innerHTML = interedValues;
+            interedValuesList.appendChild(interedValuesP);
+          }
+          //очищаем поле ввода
+          intered.value = '';
         }
-      
+        //
         //создаем сцену
         var stage = acgraph.create('container');
-      
+        //
         //рисуем рамку
         var frameH = window.innerWidth/1.6, frameV = frameH*2/3;
         var frame = stage.rect(0,0,frameH, frameV);
-        
+        //
         // задаем базовую размерность сетки
 		var grids, grid;
 			grid = frameH/15;
         var textLayer = stage.layer();
-
-		
+		//
 		//создаем функцию рисования осей и сразу их рисуем для наглядности
         drawAxis();
         function drawAxis() {
@@ -79,12 +82,13 @@
         }
         //создаем функцию для рисования сетки, нарисуем ее, когда будет известен масштаб
         function drawGrids() {  
-          for (i = frameV; i > 0; i -= grid){
+          for (i = frameV; i > 0; i -= grid) {
             grids = stage.path()
             .moveTo(0, i)
             .lineTo(frameH, i)
             grids.stroke('lightgray', 1);
           }
+          //
           for (j = 0; j <= frameH; j += grid) {
             grids = stage.path()
             .moveTo(j, frameV)
@@ -92,8 +96,8 @@
             grids.stroke('lightgray', 1);
           }
         }
-      
-        ////рисуем график
+        //
+        //рисуем график
         var multi = 0;
         function draw(){
           //высчитываем наибольшее введенное значение для определения масштаба
@@ -115,25 +119,25 @@
             //рисуем оси
             drawAxis();
           }
-          
-        //рисуем линии графика
+          //  
+          //рисуем линии графика
           for (j = 1; j < interedValues.length; j++) {
             var graph = stage.path()
             .moveTo(frameH/15 + grid*j, frameV/2 - interedValues[j-1]* multi)
             .lineTo(frameH/15 + grid*(j+1), frameV/2 - interedValues[j] * multi)
             graph.stroke('gray', 1);
           }                    
-
-        //подписываем введенные значения на оси Х
-          for(k = 1; k <= interedValues.length; k++) {
+          //
+          //подписываем введенные значения на оси Х
+          for (k = 1; k <= interedValues.length; k++) {
             var axisXValues = stage.text(frameH/16 + grid*k, frameV/2 + frameV/100, k);
             axisXValues.parent(textLayer);
           } 
-          
+          //
           //очищаем массив с введенными данными, чтобы можно было нарисовать еще один график 
           interedValues = [];
           //добавляем новую строку в вывод элементов на странице
-          InteredValuesP = document.createElement('li');
+          interedValuesP = document.createElement('li');
         }
          
       
