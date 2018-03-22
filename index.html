@@ -18,16 +18,18 @@
 </head>
 <body>
     <p>Вводите числа и нажимайте Enter или кнопку "Добавить значение", чтобы добавить значения.</br>
-    Затем нажмите "Нарисовать график". <br/>
+    По окончании ввода нажмите "Нарисовать график". <br/>
     <form onsubmit="addValue(intered.value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Добавить значение">
     </form>
     <p id="interedValuesList">Данные для построения графика:
     </p>
-    <button type="button" onclick="draw()" style="font-size: 15pt; padding: 10px; margin: 10px">Нарисовать график</button>
+    <button type="button" onclick="draw()" style="font-size: 15pt; padding: 10px; margin: 10px">
+        Нарисовать график
+    </button>
     <p></p>
-    <div id="container" class="mainDivContent"></div>
+    <div id="container"></div>
 	<script>
         //создаем массив для добавленния введенных чисел
         var interedValues = [];
@@ -41,7 +43,7 @@
         //задаем базовую размерность сетки
 		var grid = frameH/15;
         //вводим переменную для учета масштаба
-        var multi = 0;
+        var multi;
         //создаем слой c графиком
         var graphLayer = stage.layer();
         //рисуем оси для наглядности
@@ -49,7 +51,7 @@
         //
         //добавляем введенные числовые значения и выводим на страницу
         function addValue(newValue) {
-          //проверяем, что введено именно число
+          //проверяем, что введено именно число (способ проверки с приведением к числу не сработал)
           if (!isNaN(newValue) && (newValue != '')) {
             //добавляем значения в массив чисел
             interedValues.push(newValue);
@@ -75,11 +77,12 @@
           .close();      
 		var axisXDesc = stage.text((frameH - frameH/12), (frameV/2 + frameV/50), "X");
           axisXDesc.style({fontStyle: "italic", fontSize: "1.2vw", color: "black"});
-          axisXDesc.listen("mouseup", function (e) {
+        //для пробы сделал реагирование на подведение курсора к названию оси Х, работает странно
+          axisXDesc.listen("mousemove", function (e) {
             axisXDesc.style({fontStyle: "italic", fontSize: "1.6vw", color: "black"});
             });
           axisXDesc.listen("mouseout", function (e) {
-            axisXDesc.style({fontStyle: "italic", fontSize: "1.2vw", color: "black"});
+          axisXDesc.style({fontStyle: "italic", fontSize: "1.2vw", color: "black"});
             });    
         }
         //
@@ -97,7 +100,7 @@
         //учитываем масштаб в зависимости от количества и величины введенных переменных
         function calcScale() {
             multi = (frameV/2 - frameV/10) / calcMaxInteredValue();
-            //если чисел введено больше чем влезет - ужимаем сетку по оси X
+            //если чисел введено больше, чем влезет - ужимаем сетку по оси X
             grid = grid/Math.ceil(interedValues.length/12);
         }
         //
@@ -110,6 +113,7 @@
           var graph = acgraph.path();
           var axisXValues = acgraph.text();
           var grids = acgraph.path();
+          var points;
           //высчитываем наибольшее введенное значение для определения масштаба
           calcMaxInteredValue();
           //подбираем масштиб
@@ -118,7 +122,6 @@
           for (i = frameV; i > 0; i -= grid) {
             grids.moveTo(0, i);
             grids.lineTo(frameH, i);
-            grids.stroke('lightgray', 1);
           }
           //
           for (j = 0; j <= frameH; j += grid) {
@@ -136,7 +139,11 @@
             graph.lineTo(frameH/15 + grid*(j+1), frameV/2 - interedValues[j] * multi);
             graph.stroke('gray', 1);
             graph.parent(graphLayer);
+            points = acgraph.circle(frameH/15 + grid*j, frameV/2 - interedValues[j-1]* multi, frameH/400);
+            points.parent(graphLayer);
           }
+          points = acgraph.circle(frameH/15 + grid*(j), frameV/2 - interedValues[j-1]* multi, frameH/400);
+          points.parent(graphLayer);
           //подписываем введенные значения на оси Х
           for (k = 1; k <= interedValues.length; k++) {
             axisXValues = acgraph.text(frameH/16 + grid*k, frameV/2 + frameV/100, k);
