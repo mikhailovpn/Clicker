@@ -20,7 +20,7 @@
     <p>Вводите числа и нажимайте Enter или кнопку "Добавить значение", чтобы добавить значения.</br>
     Затем нажмите "Нарисовать график". <br/>
     Можно добавлять новые графики (должны соответствовать масштабу первого графика).</p>
-    <form action="" onsubmit="addValue(intered.value); return false;">
+    <form onsubmit="addValue(intered.value); return false;">
 	  Введите число: <input id="intered">
       <input type="submit" value="Добавить значение">
     </form>
@@ -29,39 +29,41 @@
     <!-- <button type="button" onclick="graph.clear()">Кнопка для тестирования</button> -->
     <button type="button" onclick="draw()" style="font-size: 15pt; padding: 10px; margin: 10px">Нарисовать график</button>
     <p></p>
-    <div id="container"></div>
+    <div id="container" style="overflow: auto;"></div>
 	<script>
-        //Создаем массив для добавленния введенных чисел
+        //создаем массив для добавленния введенных чисел
         var interedValues = [];
-        //Добавляем раздел для вывода на страницу введенных данных
-        var interedValuesP = document.createElement('li');
+        //добавляем раздел для вывода на страницу введенных данных
+        var interedValuesPrint = document.createElement('li');
+        //создаем сцену
+        var stage = acgraph.create('container');
+        //задаем размеры будущего графика и рисуем рамку
+        var frameH = window.innerWidth/1.6, frameV = frameH*2/3;
+        var frame = stage.rect(0,0,frameH, frameV);
+        //задаем базовую размерность сетки
+		var grid = frameH/15;
+        //вводим переменную для учета масштаба
+        var multi = 0;
+        //создаем слой текста на графике
+        var textLayer = stage.layer();
+        //рисуем оси для наглядности
+        drawAxis();
+        //
+        //добавляем введенные числовые значения и выводим на страницу
         function addValue(newValue) {
           //проверяем, что введено именно число
-          if (!isNaN(newValue)) {
+          if (!isNaN(newValue) && (newValue != '')) {
             //добавляем значения в массив чисел
             interedValues.push(newValue);
             //выводим введенные значения на страницу
-            interedValuesP.innerHTML = interedValues;
-            interedValuesList.appendChild(interedValuesP);
+            interedValuesPrint.innerHTML = interedValues;
+            interedValuesList.appendChild(interedValuesPrint);
           }
           //очищаем поле ввода
           intered.value = '';
         }
-        //
-        //создаем сцену
-        var stage = acgraph.create('container');
-        //
-        //рисуем рамку
-        var frameH = window.innerWidth/1.6, frameV = frameH*2/3;
-        var frame = stage.rect(0,0,frameH, frameV);
-        //
-        // задаем базовую размерность сетки
-		var grids, grid;
-			grid = frameH/15;
-        var textLayer = stage.layer();
 		//
-		//создаем функцию рисования осей и сразу их рисуем для наглядности
-        drawAxis();
+		//рисуем оси
         function drawAxis() {
 		var axisY = stage.path()
           .moveTo(frameH/15, frameV/10)
@@ -70,7 +72,7 @@
         
 		var axisYDesc = acgraph.text(frameH/25,  frameV/10, "Y");
           axisYDesc.parent(textLayer);
-          axisYDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
+          axisYDesc.style({fontStyle: "italic", fontSize: "1.5vw", color: "black"});
       
 		var axisX = stage.path()
           .moveTo(frameH/15, (frameV/2))
@@ -79,11 +81,12 @@
       
 		var axisXDesc = acgraph.text((frameH - frameH/12), (frameV/2 + frameV/50), "X");
           axisXDesc.parent(textLayer);
-          axisXDesc.style({fontStyle: "italic", fontSize: "12px", color: "black"});
+          axisXDesc.style({fontStyle: "italic", fontSize: "1.5vw", color: "black"});
       
         }
         //создаем функцию для рисования сетки, нарисуем ее, когда будет известен масштаб
-        function drawGrids() {  
+        function drawGrids() {
+          var grids;
           for (i = frameV; i > 0; i -= grid) {
             grids = stage.path()
             .moveTo(0, i)
@@ -99,29 +102,37 @@
           }
         }
         //
-        //рисуем график
-        var multi = 0;
-        function draw(){
-          //высчитываем наибольшее введенное значение для определения масштаба
+        //высчитываем наибольшее введенное значение для определения масштаба
+        function calcMaxInteredValue() {
           var maxValue;
           maxValue = Math.abs(interedValues[0]);
           for (i = 0; i < interedValues.length; i++) {
             if (Math.abs(interedValues[i]) > maxValue){
               maxValue = Math.abs(interedValues[i]);
             }
-          }           
-          //проверяем, не нарисован ли у нас уже хоть один график, если нарисован - масштаб не меняем, сетку не меняем
-          if (multi === 0) {
-            //вводим переменную для учета масштаба
-            multi = (frameV/2 - frameV/5) / maxValue;
+          }
+          return maxValue;
+        }
+        //учитываем масштаб в зависимости от количества и величины введенных переменных
+        function calcScale() {
+            multi = (frameV/2 - frameV/10) / calcMaxInteredValue();
             //если чисел введено больше чем влезет - ужимаем сетку по оси X
             grid = grid/Math.ceil(interedValues.length/12);
+        }
+        //
+        //рисуем график
+        function draw(){
+          //высчитываем наибольшее введенное значение для определения масштаба
+          calcMaxInteredValue();
+          //если ни один график не нарисован - подбираем масштаб, рисуем сетку
+          if (multi === 0) {
+            //подбираем масштиб
+            calcScale();
             //рисуем сетку
             drawGrids();
             //рисуем оси
             drawAxis();
           }
-          //  
           //рисуем линии графика
           for (j = 1; j < interedValues.length; j++) {
             var graph = stage.path()
@@ -129,18 +140,17 @@
             .lineTo(frameH/15 + grid*(j+1), frameV/2 - interedValues[j] * multi)
             graph.stroke('gray', 1);
           }                    
-          //
           //подписываем введенные значения на оси Х
           for (k = 1; k <= interedValues.length; k++) {
             var axisXValues = stage.text(frameH/16 + grid*k, frameV/2 + frameV/100, k);
+            axisXValues.style({fontSize: "1vw"});
             axisXValues.parent(textLayer);
           } 
-          //
           //очищаем массив с введенными данными, чтобы можно было нарисовать еще один график 
           interedValues = [];
           //добавляем новую строку в вывод элементов на странице
-          interedValuesP = document.createElement('li');
-        }             
+          interedValuesPrint = document.createElement('li');
+        }
   </script>
 </body>
 </html>
