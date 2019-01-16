@@ -1,2 +1,2 @@
 # mikhailovpn.github.io
-Anycharts test
+Barbershop test website for EST school
