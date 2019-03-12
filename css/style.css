@@ -382,16 +382,25 @@ main {
 	padding: 0;
 }
 
+.row-3-right h3 {
+  margin-left: 25px;
+}
+
 .row-3-right ul li {
 	width: 100px;
 	padding: 0;
-	margin: 0 15px;;
+	margin: 0 20px;;
 }
 
 .big-percent {
 	font-size: 40px;
 	font-weight: bold;
 }
+
+.big-percent-description {
+  padding-left: 5px;
+}
+
 
 .row-logo {
 	display: flex;
@@ -463,6 +472,8 @@ footer {
 	position: absolute;
 	top: 50px;
 	left: 765px;
+  background-image: url("../img/map-marker.png");
+  z-index: 1;
 }
 
 .social {
@@ -503,7 +514,7 @@ footer {
 
 .social-button a:active {
 	color: #000000;
-	
+
 	background-color: #d7373b;
 	box-shadow: 0 3px rgba(0, 0, 0, 0.1) inset;
 }
@@ -708,6 +719,14 @@ h1 {
   background: url("../img/radio-on.svg") no-repeat center;
 }
 
+.filter-input-radio:disabled + label::before {
+  opacity: 0.2;
+}
+
+.filter-input-checkbox:hover + label::before {
+  opacity: 1.0;
+}
+
 .filter-input-checkbox + label::before {
   content: "";
   position: absolute;
@@ -725,6 +744,10 @@ h1 {
   left: -37px;
 }
 
+.filter-input-checkbox:disabled + label::before {
+  opacity: 0.2;
+}
+
 .sort-items {
 	font-weight:bold;
 	text-align: left;
@@ -740,7 +763,7 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-	
+
 	margin-bottom: 50px;
 }
 
@@ -762,6 +785,10 @@ h1 {
 
 .examples-form-right a:active {
 	opacity: 1;
+}
+
+.examples-form-right .sort-active {
+  opacity: 1;
 }
 
 .examples-images {
@@ -800,9 +827,10 @@ h1 {
   opacity: 1;
 }
 
-.example-image-footer p {
+.example-image-footer p,
+.example-image-footer a {
 	text-decoration: none;
-	
+
 	text-align: center;
 	margin: 20px auto;
 }
@@ -811,6 +839,8 @@ h1 {
 	color: #000000;
 	font-size: 18px;
 	font-weight: 700;
+  text-transform: uppercase;
+  padding-top: 10px;
 }
 
 .product-info {
