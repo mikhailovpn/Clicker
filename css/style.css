@@ -444,7 +444,7 @@ footer {
 	background-position: center center;
 }
 
-.feedback-form {
+.feedback-window {
 	position: absolute;
 	left: 140px;
 	top: 52px;
@@ -455,16 +455,16 @@ footer {
 	background-color: #ffffff;
 }
 
-.feedback-form h3 {
+.feedback-window h3 {
   margin-top: 0;
 }
 
-.feedback-form .button {
+.feedback-window .button {
   width: 220px;
   margin-top: 25px;
 }
 
-.feedback-form p {
+.feedback-window p {
 	opacity: 0.6;
 }
 
@@ -535,7 +535,37 @@ footer {
 	margin-top: 50px;
 }
 
+.modal-feedback {
+	box-sizing: border-box;
+	width: 960px;
+	padding: 60px 100px;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.6);
+	margin: 100px auto;
+	z-index: 1;
+}
 
+.feedback-form {
+	display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.feedback-form p {
+	font-weight: 700;
+}
+
+.user-name-input,
+.user-email-input {
+	width: 320px;
+	padding: 10px;
+}
+
+.user-letter-input {
+	width: 738px;
+	padding: 10px;
+}
 
 
 /*Оформление каталога*/
@@ -904,3 +934,4 @@ h1 {
   padding: 10px 16px;
   border-radius: 3px;
 }
+
