@@ -551,6 +551,9 @@ footer {
 	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.6);
 	margin: 100px 0;
 	background-color: #FFFFFF;
+}
+
+.hidden {
 	display: none;
 }
 

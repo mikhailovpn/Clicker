@@ -7,7 +7,7 @@
     <link href="css/normalize.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
   </head>
-  <body>
+  <body onload="onLoad()">
     <header>
       <nav>
         <div class="navigation-panel">
@@ -142,8 +142,9 @@
         </div>
       </section>
 			
-			<section class="modal-feedback">
+			<section class="modal-feedback hidden">
 				<h2>Напишите нам</h2>
+				<img src="img/vk-icon.svg" alt="Закрыть"></img>
 				<form class="feedback-form" action="#" method="post">
 					<p class="half-input">
 						<label for="user-name">Ваше имя</label><br>
