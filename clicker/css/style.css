@@ -1,0 +1,58 @@
+body {
+  padding: 25px;
+  width: 1140px;
+  margin: 0 auto;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  width: 380px;
+}
+
+.title > * {
+  display: block;
+  margin: auto;
+
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.items {
+  margin-left: 50px;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+
+.item i {
+  line-height: 70px;
+  margin-right: 20px;
+}
+
+.item img {
+  border: 2px solid grey;
+}
+
+.item-counter {
+  font-size: 40px;
+  font-weight: bold;
+  width: 40px;
+}
+
+.coins-legend {
+  font-size: 52px;
+}
+
+.coins-counter {
+  display: inline-block;
+  font-size: 52px;
+  width: 120px;
+  border: 5px solid lightgrey;
+}

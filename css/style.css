@@ -539,7 +539,7 @@ footer {
 	margin-top: 50px;
 }
 
-.modal-feedback {	
+.modal-feedback {
 	position: fixed;
 	top: 0;
 	left: 50%;
@@ -555,10 +555,6 @@ footer {
 
 .hidden {
 	display: none;
-}
-
-.unhidden {
-	display: block;
 }
 
 .feedback-form {
@@ -955,4 +951,3 @@ h1 {
   padding: 10px 16px;
   border-radius: 3px;
 }
-
