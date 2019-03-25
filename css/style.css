@@ -553,6 +553,12 @@ footer {
 	background-color: #FFFFFF;
 }
 
+.modal-feedback h2 {
+	width: 730px;
+	width: 730px;
+	display: inline-block;
+}
+
 .hidden {
 	display: none;
 }
