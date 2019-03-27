@@ -160,7 +160,7 @@ main {
 	border-radius: 50%;
 }
 
-.slider-controls .active::before {
+.slider-controls .js-slider-button-active::before {
 	content: "";
 
 	position: absolute;
@@ -189,7 +189,7 @@ main {
   padding: 78px 0 80px 0;
 }
 
-.slider-item:nth-child(1) {
+.js-slider-item-active {
 	display: block;
 }
 
