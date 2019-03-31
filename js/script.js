@@ -35,7 +35,7 @@ function activateSlide(event) {
 function onLoad(){
 		sendButton = $('.sendButton');
 		modalFeedback = $('.modal-feedback');
-		modalClose = $('.js-modal-close');
+		modalClose = $$('.js-modal-close');
 		activeSlideItem = $('.js-slider-item-active');
 		activeSlideButton = $('.js-slider-button-active');
 		slideItems = $$('.js-slider-item');
@@ -44,10 +44,13 @@ function onLoad(){
 
 
 		sendButton.onclick = openModalFeedback;
-		modalClose.onclick = closeModalFeedback;
+
+		for (var i = 0; i < modalClose.length; i++) {
+				modalClose[i].onclick = closeModalFeedback;
+		}
+
 
 		for (var i = 0; i < slideItems.length; i++) {
 				slideButtons[i].onclick = activateSlide;
-
 		}
 }

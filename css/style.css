@@ -587,6 +587,9 @@ footer {
 	padding: 10px;
 }
 
+.js-modal-close {
+  cursor: pointer;
+}
 
 /*Оформление каталога*/
 
