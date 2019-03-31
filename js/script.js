@@ -21,28 +21,19 @@ function $$(selector){
 
 function slide(target) {
 		console.log(target);
-} 
+}
 
 function activateSlide(event) {
-	
-	//1 получение номера
-	//1.1 на лету
-
-	for (i = 0; i <  slideButtons.length; i++) {
+	for (var i = 0; i <  slideButtons.length; i++) {
 		if (activeSlideButton = slideButtons[i]) {
 				slideButtons[i].classList.remove('js-slider-button-active');
 				slideItems[i].classList.remove('js-slider-item-active');
 		}
 	}
-	
-	//1.2 через данные
-	
-	//2 отображение iго слайда
-	//1.1 на лету
-	//1.2 через данные
-	
-	
-}	
+	var numberOfSlide = event.target.attributes.dataSlideId.value;
+	event.target.classList.add('js-slider-button-active');
+	slideItems[numberOfSlide].classList.add('js-slider-item-active');
+}
 
 function onLoad(){
 		sendButton = $('.sendButton');
@@ -52,14 +43,14 @@ function onLoad(){
 		activeSlideButton = $('.js-slider-button-active');
 		slideItems = $$('.js-slider-item');
 		slideButtons = $$('.js-slider-button');
-		
-		
+
+
 
 		sendButton.onclick = openModalFeedback;
 		modalClose.onclick = closeModalFeedback;
 
 		for (var i = 0; i < slideItems.length; i++) {
 				slideButtons[i].onclick = activateSlide;
-					
+
 		}
 }
