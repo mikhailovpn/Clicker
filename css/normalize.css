@@ -194,8 +194,7 @@ select { /* 1 */
 
 button,
 [type="button"],
-[type="reset"],
-[type="submit"] {
+[type="reset"] {
   -webkit-appearance: button;
 }
 

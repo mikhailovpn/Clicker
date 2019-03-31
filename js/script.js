@@ -24,6 +24,10 @@ function slide(target) {
 }
 
 function activateSlide(event) {
+
+	//1 получение номера
+	//1.1 на лету
+
 	for (var i = 0; i <  slideButtons.length; i++) {
 		if (activeSlideButton = slideButtons[i]) {
 				slideButtons[i].classList.remove('js-slider-button-active');
@@ -31,8 +35,17 @@ function activateSlide(event) {
 		}
 	}
 	var numberOfSlide = event.target.attributes.dataSlideId.value;
+
 	event.target.classList.add('js-slider-button-active');
 	slideItems[numberOfSlide].classList.add('js-slider-item-active');
+
+	//1.2 через данные
+
+	//2 отображение iго слайда
+	//1.1 на лету
+	//1.2 через данные
+
+
 }
 
 function onLoad(){
